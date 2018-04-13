@@ -107,14 +107,20 @@ int GetListCount(ListHead *myList){
 }
 // empty list
 int IsEmpty(ListHead *myList){
-  return GetListCount(myList)<=0;
+  if (myList != NULL){
+    return GetListCount(myList)<=0;
+  }else {
+    printf("The list is NULL\n");
+    return 0;
+  }
+
+  
 }
 
 // list search
 int Search (ListHead *myList, int target){
   node *pCur = myList->head;
   
-
   while (pCur != NULL)
   {
       if (pCur->data == target)
@@ -163,8 +169,34 @@ void Empty(ListHead *myList){
     myList-> head = NULL;
   }
 }
+// destroy list
+void Destroy(ListHead *myList){
+  Empty(myList);
+  myList -> count =0;
+  myList -> head =NULL;
+  myList=NULL;
+  free (myList);
+}
+// full list
+void IsMemoraryFull(){
 
+}
 
+//Traverse list
+void Traverse(ListHead *myList){
+  struct node *temp;
+  if (myList -> head == NULL){
+
+  }else{
+    temp = myList-> head;
+    while (temp != NULL){
+      printf("%d ", temp -> data );
+      
+      temp = temp->next;
+    }
+    printf("\n Traverse done!\n");
+  }
+}
 
 
 void PrintList(ListHead *myList) {
@@ -178,6 +210,8 @@ void PrintList(ListHead *myList) {
     printf("List is empty \n");
   }
 }
+
+
 
 int main()
 {
@@ -213,7 +247,10 @@ int main()
   // else
   //   printf("Not found \n");
 
+  Traverse(myList);
+
   Empty(myList);
+  Destroy(myList);
 
 
   PrintList(myList);
