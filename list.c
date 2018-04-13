@@ -55,7 +55,7 @@ void Insert(ListHead *myList, int data) {
       pNew->data = data;
       myList->count++;
 
-      node *pPre = NULL, *pCur = myList->head;
+      node *pPre = (node *) malloc(sizeof(node)), *pCur = myList->head;
 
       do {
         pPre = pCur;
@@ -72,8 +72,9 @@ void Insert(ListHead *myList, int data) {
 }
 
 // delete spercific data in the list
+
 int Delete(ListHead *myList, int data) {
-  node *pPre = NULL, *pCur = myList->head, *pDel = NULL;
+  node *pPre = (node *) malloc(sizeof(node)), *pCur = myList->head, *pDel = (node *) malloc(sizeof(node));
   // number of times found
   int rv = 0;
   do {
@@ -99,20 +100,6 @@ int Delete(ListHead *myList, int data) {
 
   return rv;
 }
-// list search
-int Search (ListHead *myList, int target){
-  node *pCur = myList->head;
-
-  while (pCur != NULL)
-  {
-      if (pCur->data == target)
-        return 1;
-      pCur = pCur->next;
-  }
-  return 0;
-
-  
-}
 
 // list count
 int GetListCount(ListHead *myList){
@@ -120,15 +107,75 @@ int GetListCount(ListHead *myList){
 }
 // empty list
 int IsEmpty(ListHead *myList){
-  return GetListCount(myList);
+  return GetListCount(myList)<=0;
+}
+
+// list search
+int Search (ListHead *myList, int target){
+  node *pCur = myList->head;
+  
+
+  while (pCur != NULL)
+  {
+      if (pCur->data == target)
+        return 1;
+
+      pCur = pCur->next;
+  }
+  return 0;
+}
+
+int RetrieveList(ListHead *myList, int target){
+  node *pCur = myList->head;
+  node *pDel = myList->head;
+  int dataOut =0;
+  
+
+  while (pCur != NULL)
+  {
+      if (pCur->data == target){
+        dataOut= pCur->data;
+        pDel = pCur;
+        pCur = pCur->next;
+
+        // myList->count--;
+        // free(pDel);
+        return dataOut;
+      }else{
+        pCur = pCur->next;
+      }
+      
+  }
+  return dataOut;
+}
+
+void Empty(ListHead *myList){
+
+  if (! IsEmpty(myList)){
+    node *pCur = myList->head;
+    node *pDel = myList->head;
+    while (pCur != NULL){
+      myList->count--;
+      pDel = pCur;
+      pCur = pCur->next;
+      free (pDel);
+    }
+    myList-> head = NULL;
+  }
 }
 
 
+
+
 void PrintList(ListHead *myList) {
-  node *pCur = myList->head;
-  for (int k = 0; k < myList->count; k++) {
-    printf("%d \n", pCur->data);
-    pCur = pCur->next;
+  if (! IsEmpty(myList)){
+    node *pCur = myList->head;
+    for (int k = 0; k < myList->count; k++) {
+      printf("%d \n", pCur->data);
+      pCur = pCur->next;
+    }
+  }else{
+    printf("List is empty \n");
   }
 }
 
@@ -155,13 +202,19 @@ int main()
 
   printf(" finding 89 result: %d \n", result );
 
-  int found = Delete(myList, 89);
+  int dataOut = RetrieveList(myList, 1);
+  printf(" retrieve  %d \n", dataOut );
 
-  if (found){
-    printf("The value 89 was found %d times \n", found);
-  }
-  else
-    printf("Not found \n");
+  // int deleted = Delete(myList, 89);
+
+  // if (deleted){
+  //   printf("The value 89 was found %d times \n", deleted);
+  // }
+  // else
+  //   printf("Not found \n");
+
+  Empty(myList);
+
 
   PrintList(myList);
 
